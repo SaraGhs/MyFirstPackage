@@ -1,0 +1,29 @@
+---
+title: "Mesocosome Microbiome QAC project"
+---
+
+I have an Excel file with data compiled from a Mesocosome about microbiome and QAC project.
+
+To make this easy to share this dataset I will read it , covert it to an 'Data' file, and then document it.
+
+Load the packages needed to preprocess the data:
+```{r}
+library(tidyverse)
+library(readxl)
+library(countrycode)
+library(here)
+```
+
+Read the Excel file as a dataframe:
+```{r}
+KK_QAC_May2024_samples <- read_excel(here("data-raw", "KK-QAC-May2024-samples.xlsx"))
+
+view(KK_QAC_May2024_samples)
+```
+
+Save to data folder:
+```{r}
+usethis::use_data(KK_QAC_May2024_samples, overwrite = TRUE)
+```
+
+
