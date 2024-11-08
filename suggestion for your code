@@ -1,0 +1,34 @@
+To my understanding, for your sample data, I think it could be useful to add a code that helps you easily process the data. Alternatively, some kind of code could assist you in normalizing your data. 
+If you have multiple steps to process the data, for example, I am attaching my code as an example:
+
+# Define the columns to apply the transformation to
+face_scanning <- c("open_percent", "close_percent", "averted_percent", "directed_percent", 
+                   "congruent_percent", "incongruent_percent", "direct_percent", 
+                   "foil_percent", "eyes_percent", "mouth_percent")
+
+# Remove outliers and log transform for all columns in face_scanning
+for (col_name in face_scanning) {
+  
+  # Calculate mean and standard deviation for the current column
+  mean_value <- mean(data[[col_name]], na.rm = TRUE)
+  sd_value <- sd(data[[col_name]], na.rm = TRUE)
+  
+  # Define upper and lower thresholds for outliers
+  upper_threshold <- mean_value + 2 * sd_value
+  lower_threshold <- mean_value - 2 * sd_value
+  
+  # Remove outliers by filtering values within the threshold
+  data[[paste0(col_name, "_sd_removed")]] <- ifelse(
+    data[[col_name]] >= lower_threshold & data[[col_name]] <= upper_threshold,
+    data[[col_name]],
+    NA  # Assign NA to values outside the thresholds (outliers)
+  )
+  
+  # Apply log transformation to the column with the "_sd_removed" suffix
+  data[[paste0(col_name, "_sd_removed_log")]] <- log(data[[paste0(col_name, "_sd_removed")]] + 1)  # Log transform with +1 to avoid log(0)
+  
+}
+This code starts by defining the columns I want to use (face_scanning). I find this approach ideal when working with multiple columns to process. The following code runs a for loop to calculate the mean 
+and standard deviation, then defines the upper and lower thresholds. In our case, I used 2 standard deviations to remove outliers. Afterward, the code assigns the processed data to a new column, 
+while keeping the original data intact. Finally, it normalizes the data using a log transformation, where adding +1 helps avoid log(0). I thpught adding a function follows this model could be 
+helpful to work with your data, automates the process and time-efficient so you dont have to redo long line of coding for your every project.
