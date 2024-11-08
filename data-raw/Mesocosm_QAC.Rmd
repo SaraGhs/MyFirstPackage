@@ -8,7 +8,7 @@ To make this easy to share this dataset I will read it , covert it to an 'Data' 
 
 Load the packages needed to preprocess the data:
 ```{r}
-library(tidyverse)
+library(tidyverse) #to load data
 library(readxl)
 library(countrycode)
 library(here)
